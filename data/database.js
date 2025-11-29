@@ -13,7 +13,7 @@ const initDB = (callback) => {
   MongoClient.connect(process.env.MONGODB_URI)
     .then((client) => {
       db = client.db(); // ⭐ Ya no es necesario poner 'BooksInventory'
-      console.log('🚀 Connected to MongoDB');
+      console.log('Connected to MongoDB');
       callback(null, db);
     })
     .catch((err) => {

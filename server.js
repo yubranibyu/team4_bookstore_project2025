@@ -19,7 +19,7 @@ mongodb.initDB((err) => {  // ← Asegúrate que es initDb (minúscula)
     console.log('❌ Error connecting to database:', err);
   } else {
     app.listen(port, () => {
-      console.log(`🚀 Server listening at http://localhost:${port}`);
+      console.log(`Server listening at http://localhost:${port}`);
     });
   }
 });
