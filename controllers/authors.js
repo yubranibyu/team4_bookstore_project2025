@@ -6,7 +6,6 @@ const getAll = async (req, res) => {
   try {
     const db = mongodb.getDB();
     const authors = await db.collection('authors').find().toArray();
-
     res.status(200).json(authors);
   } catch (err) {
     console.error('Failed obtaining authors:', err);
@@ -36,11 +35,11 @@ const createAuthor = async (req, res) => {
   //  #swagger.tags=['Authors']
   
   const author = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    name: req.body.name,
+    birthYear: req.body.birthYear,
     nationality: req.body.nationality,
-    birthDate: req.body.birthDate,
-    booksWritten: req.body.booksWritten // puede ser número o array
+    awards: req.body.awards || [],
+    numBooksWritten: req.body.numBooksWritten
   };
 
   try {
@@ -59,11 +58,11 @@ const updateAuthor = async (req, res) => {
   //  #swagger.tags=['Authors']
   const authorId = new ObjectId(req.params.id);
   const author = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    name: req.body.name,
+    birthYear: req.body.birthYear,
     nationality: req.body.nationality,
-    birthDate: req.body.birthDate,
-    booksWritten: req.body.booksWritten
+    awards: req.body.awards || [],
+    numBooksWritten: req.body.numBooksWritten
   };
 
   try {

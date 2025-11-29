@@ -34,14 +34,15 @@ const getSingle = async (req, res) => {
 
 const createBook = async (req, res) => {
   //  #swagger.tags=['Books']
-
   const book = {
     title: req.body.title,
-    authorId: req.body.authorId, // Puedes almacenar el ObjectId del author
+    author: req.body.author, // Puede ser string o ObjectId si lo deseas
     genre: req.body.genre,
-    publishYear: req.body.publishYear,
+    publishedYear: req.body.publishedYear,
+    language: req.body.language,
     pages: req.body.pages,
-    price: req.body.price
+    available: req.body.available,
+    summary: req.body.summary
   };
 
   try {
@@ -62,11 +63,13 @@ const updateBook = async (req, res) => {
   const bookId = new ObjectId(req.params.id);
   const book = {
     title: req.body.title,
-    authorId: req.body.authorId,
+    author: req.body.author,
     genre: req.body.genre,
-    publishYear: req.body.publishYear,
+    publishedYear: req.body.publishedYear,
+    language: req.body.language,
     pages: req.body.pages,
-    price: req.body.price
+    available: req.body.available,
+    summary: req.body.summary
   };
 
   try {

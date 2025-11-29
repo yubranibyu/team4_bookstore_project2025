@@ -2,7 +2,7 @@ const mongodb = require('../data/database');
 const { ObjectId } = require('mongodb');
 
 const getAll = async (req, res) => {
-  //  #swagger.tags=['Subscriber']
+  // #swagger.tags=['Subscriber']
   try {
     const db = mongodb.getDB();
     const subscribers = await db.collection('subscriber').find().toArray();
@@ -14,7 +14,7 @@ const getAll = async (req, res) => {
 };
 
 const getSingle = async (req, res) => {
-  //  #swagger.tags=['Subscriber']
+  // #swagger.tags=['Subscriber']
   try {
     const subscriberId = new ObjectId(req.params.id);
     const db = mongodb.getDB();
@@ -32,12 +32,12 @@ const getSingle = async (req, res) => {
 };
 
 const createSubscriber = async (req, res) => {
-  //  #swagger.tags=['Subscriber']
+  // #swagger.tags=['Subscriber']
   const subscriber = {
-    name: req.body.name,
+    subscribername: req.body.subscribername,
     email: req.body.email,
-    subscribedAt: req.body.subscribedAt || new Date(),
-    status: req.body.status || 'active'
+    accessToken: req.body.accessToken,
+    role: req.body.role
   };
 
   try {
@@ -54,13 +54,13 @@ const createSubscriber = async (req, res) => {
 };
 
 const updateSubscriber = async (req, res) => {
-  //  #swagger.tags=['Subscriber']
+  // #swagger.tags=['Subscriber']
   const subscriberId = new ObjectId(req.params.id);
   const subscriber = {
-    name: req.body.name,
+    subscribername: req.body.subscribername,
     email: req.body.email,
-    subscribedAt: req.body.subscribedAt,
-    status: req.body.status
+    accessToken: req.body.accessToken,
+    role: req.body.role
   };
 
   try {
@@ -77,7 +77,7 @@ const updateSubscriber = async (req, res) => {
 };
 
 const deleteSubscriber = async (req, res) => {
-  //  #swagger.tags=['Subscriber']
+  // #swagger.tags=['Subscriber']
   const subscriberId = new ObjectId(req.params.id);
   try {
     const response = await mongodb.getDB().collection('subscriber').deleteOne({ _id: subscriberId });

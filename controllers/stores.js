@@ -2,7 +2,7 @@ const mongodb = require('../data/database');
 const { ObjectId } = require('mongodb');
 
 const getAll = async (req, res) => {
-  //  #swagger.tags=['Stores']
+  // #swagger.tags=['Stores']
   try {
     const db = mongodb.getDB();
     const stores = await db.collection('stores').find().toArray();
@@ -14,7 +14,7 @@ const getAll = async (req, res) => {
 };
 
 const getSingle = async (req, res) => {
-  //  #swagger.tags=['Stores']
+  // #swagger.tags=['Stores']
   try {
     const storeId = new ObjectId(req.params.id);
     const db = mongodb.getDB();
@@ -32,15 +32,10 @@ const getSingle = async (req, res) => {
 };
 
 const createStore = async (req, res) => {
-  //  #swagger.tags=['Stores']
-
+  // #swagger.tags=['Stores']
   const store = {
-    name: req.body.name,
     location: req.body.location,
-    phone: req.body.phone,
-    email: req.body.email,
-    openingHours: req.body.openingHours,
-    booksAvailable: req.body.booksAvailable // puede ser un número o un array de ObjectId
+    owner: req.body.owner
   };
 
   try {
@@ -57,15 +52,11 @@ const createStore = async (req, res) => {
 };
 
 const updateStore = async (req, res) => {
-  //  #swagger.tags=['Stores']
+  // #swagger.tags=['Stores']
   const storeId = new ObjectId(req.params.id);
   const store = {
-    name: req.body.name,
     location: req.body.location,
-    phone: req.body.phone,
-    email: req.body.email,
-    openingHours: req.body.openingHours,
-    booksAvailable: req.body.booksAvailable
+    owner: req.body.owner
   };
 
   try {
@@ -82,7 +73,7 @@ const updateStore = async (req, res) => {
 };
 
 const deleteStore = async (req, res) => {
-  //  #swagger.tags=['Stores']
+  // #swagger.tags=['Stores']
   const storeId = new ObjectId(req.params.id);
   try {
     const response = await mongodb.getDB().collection('stores').deleteOne({ _id: storeId });
