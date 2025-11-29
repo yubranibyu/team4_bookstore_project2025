@@ -9,60 +9,6 @@
   "basePath": "/",
   "schemes": ["https"],
   "paths": {
-    "/authors": {
-      "get": {
-        "tags": ["Authors"],
-        "description": "Get all authors",
-        "responses": { "200": { "description": "List of authors" } }
-      },
-      "post": {
-        "tags": ["Authors"],
-        "description": "Create an author",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "author",
-            "schema": {
-              "type": "object",
-              "properties": { "name": { "type": "string" } },
-              "required": ["name"]
-            }
-          }
-        ],
-        "responses": { "201": { "description": "Author created" } }
-      }
-    },
-    "/authors/{id}": {
-      "get": {
-        "tags": ["Authors"],
-        "description": "Get a single author by ID",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
-        "responses": { "200": { "description": "Author found" } }
-      },
-      "put": {
-        "tags": ["Authors"],
-        "description": "Update an author",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" },
-          {
-            "in": "body",
-            "name": "author",
-            "schema": {
-              "type": "object",
-              "properties": { "name": { "type": "string" } }
-            }
-          }
-        ],
-        "responses": { "204": { "description": "Author updated" } }
-      },
-      "delete": {
-        "tags": ["Authors"],
-        "description": "Delete an author",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
-        "responses": { "204": { "description": "Author deleted" } }
-      }
-    },
-
     "/books": {
       "get": {
         "tags": ["Books"],
@@ -81,6 +27,7 @@
               "properties": {
                 "title": { "type": "string" },
                 "authorId": { "type": "string" },
+                "author": { "type": "string" },
                 "genre": { "type": "string" },
                 "price": { "type": "number" },
                 "year": { "type": "number" }
@@ -90,41 +37,6 @@
           }
         ],
         "responses": { "201": { "description": "Book created" } }
-      }
-    },
-    "/books/{id}": {
-      "get": {
-        "tags": ["Books"],
-        "description": "Get a book by ID",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
-        "responses": { "200": { "description": "Book found" } }
-      },
-      "put": {
-        "tags": ["Books"],
-        "description": "Update a book",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" },
-          {
-            "in": "body",
-            "name": "book",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "title": { "type": "string" },
-                "genre": { "type": "string" },
-                "price": { "type": "number" },
-                "year": { "type": "number" }
-              }
-            }
-          }
-        ],
-        "responses": { "204": { "description": "Book updated" } }
-      },
-      "delete": {
-        "tags": ["Books"],
-        "description": "Delete a book",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
-        "responses": { "204": { "description": "Book deleted" } }
       }
     },
 
@@ -144,49 +56,16 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": { "type": "string" },
+                "owner": { "type": "string" },
                 "location": { "type": "string" },
-                "contact": { "type": "string" }
+                "phone": { "type": "string" },
+                "email": { "type": "string" }
               },
-              "required": ["name"]
+              "required": ["owner", "location"]
             }
           }
         ],
         "responses": { "201": { "description": "Store created" } }
-      }
-    },
-    "/stores/{id}": {
-      "get": {
-        "tags": ["Stores"],
-        "description": "Get store by ID",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
-        "responses": { "200": { "description": "Store found" } }
-      },
-      "put": {
-        "tags": ["Stores"],
-        "description": "Update store",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" },
-          {
-            "in": "body",
-            "name": "store",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": { "type": "string" },
-                "location": { "type": "string" },
-                "contact": { "type": "string" }
-              }
-            }
-          }
-        ],
-        "responses": { "204": { "description": "Store updated" } }
-      },
-      "delete": {
-        "tags": ["Stores"],
-        "description": "Delete store",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
-        "responses": { "204": { "description": "Store deleted" } }
       }
     },
 
@@ -206,48 +85,16 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": { "type": "string" },
+                "subscribername": { "type": "string" },
                 "email": { "type": "string" },
-                "subscriptionDate": { "type": "string", "format": "date" }
+                "role": { "type": "string" },
+                "accessToken": { "type": "string" }
               },
-              "required": ["email"]
+              "required": ["email", "subscribername"]
             }
           }
         ],
         "responses": { "201": { "description": "Subscriber created" } }
-      }
-    },
-    "/subscriber/{id}": {
-      "get": {
-        "tags": ["Subscriber"],
-        "description": "Get subscriber by ID",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
-        "responses": { "200": { "description": "Subscriber found" } }
-      },
-      "put": {
-        "tags": ["Subscriber"],
-        "description": "Update subscriber",
-        "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" },
-          {
-            "in": "body",
-            "name": "subscriber",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": { "type": "string" },
-                "email": { "type": "string" }
-              }
-            }
-          }
-        ],
-        "responses": { "204": { "description": "Subscriber updated" } }
-      },
-      "delete": {
-        "tags": ["Subscriber"],
-        "description": "Delete subscriber",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "type": "string" }],
-        "responses": { "204": { "description": "Subscriber deleted" } }
       }
     }
   }
