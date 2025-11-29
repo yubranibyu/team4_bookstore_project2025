@@ -1,6 +1,7 @@
 const mongodb = require('../data/database');
 const { ObjectId } = require('mongodb');
 
+// GET all stores
 const getAll = async (req, res) => {
   // #swagger.tags=['Stores']
   try {
@@ -13,16 +14,17 @@ const getAll = async (req, res) => {
   }
 };
 
+// GET single store
 const getSingle = async (req, res) => {
   // #swagger.tags=['Stores']
   try {
-    const storeId = new ObjectId(req.params.id);
-    const db = mongodb.getDB();
-    const store = await db.collection('stores').findOne({ _id: storeId });
+    const storeId = req.params.id;
+    if (!ObjectId.isValid(storeId)) return res.status(400).json({ error: 'Invalid store ID' });
 
-    if (!store) {
-      return res.status(404).json({ error: 'Store not found' });
-    }
+    const db = mongodb.getDB();
+    const store = await db.collection('stores').findOne({ _id: new ObjectId(storeId) });
+
+    if (!store) return res.status(404).json({ error: 'Store not found' });
 
     res.status(200).json(store);
   } catch (err) {
@@ -31,60 +33,77 @@ const getSingle = async (req, res) => {
   }
 };
 
+// CREATE a new store
 const createStore = async (req, res) => {
   // #swagger.tags=['Stores']
-  const store = {
-    location: req.body.location,
-    owner: req.body.owner
-  };
-
   try {
-    const response = await mongodb.getDB().collection('stores').insertOne(store);
-    if (response.acknowledged) {
-      res.status(201).json({ message: 'Store created successfully', id: response.insertedId });
-    } else {
-      res.status(500).json(response.error || 'Some error occurred while creating the store.');
+    const { location, owner } = req.body;
+
+    if (!location || typeof location !== 'string') {
+      return res.status(400).json({ error: 'location is required and must be a string' });
     }
+    if (!owner || typeof owner !== 'string') {
+      return res.status(400).json({ error: 'owner is required and must be a string' });
+    }
+
+    const store = { location, owner };
+    const db = mongodb.getDB();
+    const response = await db.collection('stores').insertOne(store);
+
+    if (!response.acknowledged) {
+      return res.status(500).json({ error: 'Could not create store' });
+    }
+
+    res.status(201).json({ message: 'Store created successfully', id: response.insertedId });
   } catch (err) {
-    console.error('Error while creating the store:', err);
-    res.status(500).json({ error: 'Error while creating the store.' });
+    console.error('Error while creating store:', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
+// UPDATE a store
 const updateStore = async (req, res) => {
   // #swagger.tags=['Stores']
-  const storeId = new ObjectId(req.params.id);
-  const store = {
-    location: req.body.location,
-    owner: req.body.owner
-  };
-
   try {
-    const response = await mongodb.getDB().collection('stores').replaceOne({ _id: storeId }, store);
-    if (response.modifiedCount > 0) {
-      res.status(204).send();
-    } else {
-      res.status(500).json(response.error || 'Some error occurred while updating the store.');
-    }
+    const storeId = req.params.id;
+    if (!ObjectId.isValid(storeId)) return res.status(400).json({ error: 'Invalid store ID' });
+
+    const { location, owner } = req.body;
+    const storeUpdate = {};
+    if (location) storeUpdate.location = location;
+    if (owner) storeUpdate.owner = owner;
+
+    const db = mongodb.getDB();
+    const response = await db.collection('stores').updateOne(
+      { _id: new ObjectId(storeId) },
+      { $set: storeUpdate }
+    );
+
+    if (response.matchedCount === 0) return res.status(404).json({ error: 'Store not found' });
+
+    res.status(204).send();
   } catch (err) {
-    console.error('Error while updating the store:', err);
-    res.status(500).json({ error: 'Error while updating the store.' });
+    console.error('Error while updating store:', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
+// DELETE a store
 const deleteStore = async (req, res) => {
   // #swagger.tags=['Stores']
-  const storeId = new ObjectId(req.params.id);
   try {
-    const response = await mongodb.getDB().collection('stores').deleteOne({ _id: storeId });
-    if (response.deletedCount > 0) {
-      res.status(204).send();
-    } else {
-      res.status(500).json(response.error || 'Some error occurred while deleting the store.');
-    }
+    const storeId = req.params.id;
+    if (!ObjectId.isValid(storeId)) return res.status(400).json({ error: 'Invalid store ID' });
+
+    const db = mongodb.getDB();
+    const response = await db.collection('stores').deleteOne({ _id: new ObjectId(storeId) });
+
+    if (response.deletedCount === 0) return res.status(404).json({ error: 'Store not found' });
+
+    res.status(204).send();
   } catch (err) {
-    console.error('Error while deleting the store:', err);
-    res.status(500).json({ error: 'Error while deleting the store.' });
+    console.error('Error while deleting store:', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
