@@ -2,23 +2,23 @@ const mongodb = require('../data/database');
 const { ObjectId } = require('mongodb');
 
 const getAll = async (req, res) => {
-  //  #swagger.tags=['Subscribers']
+  //  #swagger.tags=['Subscriber']
   try {
     const db = mongodb.getDB();
-    const subscribers = await db.collection('subscribers').find().toArray();
+    const subscribers = await db.collection('subscriber').find().toArray();
     res.status(200).json(subscribers);
   } catch (err) {
-    console.error('Failed obtaining subscribers:', err);
-    res.status(500).json({ error: 'Failed obtaining subscribers' });
+    console.error('Failed obtaining subscriber:', err);
+    res.status(500).json({ error: 'Failed obtaining subscriber' });
   }
 };
 
 const getSingle = async (req, res) => {
-  //  #swagger.tags=['Subscribers']
+  //  #swagger.tags=['Subscriber']
   try {
     const subscriberId = new ObjectId(req.params.id);
     const db = mongodb.getDB();
-    const subscriber = await db.collection('subscribers').findOne({ _id: subscriberId });
+    const subscriber = await db.collection('subscriber').findOne({ _id: subscriberId });
 
     if (!subscriber) {
       return res.status(404).json({ error: 'Subscriber not found' });
@@ -32,20 +32,20 @@ const getSingle = async (req, res) => {
 };
 
 const createSubscriber = async (req, res) => {
-  //  #swagger.tags=['Subscribers']
+  //  #swagger.tags=['Subscriber']
   const subscriber = {
     name: req.body.name,
     email: req.body.email,
     subscribedAt: req.body.subscribedAt || new Date(),
-    status: req.body.status || 'active' // optional: active / inactive
+    status: req.body.status || 'active'
   };
 
   try {
-    const response = await mongodb.getDB().collection('subscribers').insertOne(subscriber);
+    const response = await mongodb.getDB().collection('subscriber').insertOne(subscriber);
     if (response.acknowledged) {
       res.status(201).json({ message: 'Subscriber created successfully', id: response.insertedId });
     } else {
-      res.status(500).json(response.error || 'Some error occurred while creating the subscriber.');
+      res.status(500).json(response.error || 'Error while creating the subscriber.');
     }
   } catch (err) {
     console.error('Error while creating the subscriber:', err);
@@ -54,7 +54,7 @@ const createSubscriber = async (req, res) => {
 };
 
 const updateSubscriber = async (req, res) => {
-  //  #swagger.tags=['Subscribers']
+  //  #swagger.tags=['Subscriber']
   const subscriberId = new ObjectId(req.params.id);
   const subscriber = {
     name: req.body.name,
@@ -64,11 +64,11 @@ const updateSubscriber = async (req, res) => {
   };
 
   try {
-    const response = await mongodb.getDB().collection('subscribers').replaceOne({ _id: subscriberId }, subscriber);
+    const response = await mongodb.getDB().collection('subscriber').replaceOne({ _id: subscriberId }, subscriber);
     if (response.modifiedCount > 0) {
       res.status(204).send();
     } else {
-      res.status(500).json(response.error || 'Some error occurred while updating the subscriber.');
+      res.status(500).json(response.error || 'Error while updating the subscriber.');
     }
   } catch (err) {
     console.error('Error while updating the subscriber:', err);
@@ -77,14 +77,14 @@ const updateSubscriber = async (req, res) => {
 };
 
 const deleteSubscriber = async (req, res) => {
-  //  #swagger.tags=['Subscribers']
+  //  #swagger.tags=['Subscriber']
   const subscriberId = new ObjectId(req.params.id);
   try {
-    const response = await mongodb.getDB().collection('subscribers').deleteOne({ _id: subscriberId });
+    const response = await mongodb.getDB().collection('subscriber').deleteOne({ _id: subscriberId });
     if (response.deletedCount > 0) {
       res.status(204).send();
     } else {
-      res.status(500).json(response.error || 'Some error occurred while deleting the subscriber.');
+      res.status(500).json(response.error || 'Error while deleting the subscriber.');
     }
   } catch (err) {
     console.error('Error while deleting the subscriber:', err);
