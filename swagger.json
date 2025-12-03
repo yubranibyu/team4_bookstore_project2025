@@ -5,9 +5,9 @@
     "description": "API documentation for BooksInventory project",
     "version": "1.0.0"
   },
-  "host": "team4-bookstore-project2025-8b7e.onrender.com",
+  "host": "localhost:3000",
   "basePath": "/",
-  "schemes": ["https"],
+  "schemes": ["http"],
   "paths": {
     "/authors": {
       "get": {

@@ -3,7 +3,7 @@ const {
   bookValidation, 
   storeValidation, 
   subscriberValidation 
-} = require('../helpers/validate');
+} = require('../helper/validate');
 
 const { ObjectId } = require('mongodb');
 
