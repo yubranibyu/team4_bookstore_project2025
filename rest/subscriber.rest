@@ -1,0 +1,39 @@
+### Get all Subscriber
+GET http://localhost:3000/subscriber
+
+### Get single Subscrber
+GET http://localhost:3000/subscriber/6928c1a5fdb871be20a0cf09
+
+### Base route
+GET http://localhost:3000/
+
+
+### Create new Subscriber
+POST http://localhost:3000/subscriber/6928c1a5fdb871be20a0cf09
+Content-Type: application/json
+
+{
+  "subscribername": "adminNaija",
+    "email": "admin@gmail.com",
+    "accessToken": "token_admin_999",
+    "role": "admin"
+}
+
+### Update Subscriber
+PUT http://localhost:3000/subscrber/6928b59574c3a19435ff64ff
+Content-Type: application/json
+
+{
+  
+   "subscribername": "adminNaija",
+    "email": "admin@gmail.com",
+    "accessToken": "token_admin_999",
+    "role": "admin"
+}
+
+### Delete Subscrber
+DELETE http://localhost:3000/subscriber/690db03e59caccf423ead6ed
+
+
+### Swagger Documentation
+GET http://localhost:3000/api-docs

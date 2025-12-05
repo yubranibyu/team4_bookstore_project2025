@@ -1,0 +1,38 @@
+### Get all Authors
+GET http://localhost:3000/authors
+
+### Get single Author
+GET http://localhost:3000/authors/673ca12f9d14b930f8f1a302
+
+### Base route
+GET http://localhost:3000/
+
+
+### Create new Author
+POST http://localhost:3000/authors
+Content-Type: application/json
+
+{
+  "name": "Alli",
+  "email": "a.fashola@gmail.com",
+  "nationality": "Nairobi, Kenya",
+  "birthYear": "56"
+}
+
+### Update Author
+PUT http://localhost:3000/authors/6908eafccff9fe1d576261e2
+Content-Type: application/json
+
+{
+  "name": "Alli",
+  "email": "a.fashola@gmail.com",
+  "nationality": "Nairobi, Kenya",
+  "birthYear": "56"
+}
+
+### Delete Author
+DELETE http://localhost:3000/authors/690db03e59caccf423ead6ed
+
+
+### Swagger Documentation
+GET http://localhost:3000/api-docs

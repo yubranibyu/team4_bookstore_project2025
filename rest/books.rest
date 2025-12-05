@@ -1,0 +1,39 @@
+### Get all Books
+GET http://localhost:3000/books
+
+### Get single Book
+GET http://localhost:3000/books/6928b43074c3a19435ff64fb
+
+### Base route
+GET http://localhost:3000/
+
+
+### Create new Book
+POST http://localhost:3000/books/
+Content-Type: application/json
+
+{
+  "title": "Shadows of the Savannah",
+  "genre": "Thriller",
+  "language": "Swalli",
+  "publishedYear": "2022"
+}
+
+### Update Book
+PUT http://localhost:3000/books/6928b59574c3a19435ff64ff
+Content-Type: application/json
+
+{
+  
+  "title": "Lion and Jewel",
+  "genre": "Drama",
+  "language": "English",
+  "publishedYear": "2022"
+}
+
+### Delete Book
+DELETE http://localhost:3000/books/690db03e59caccf423ead6ed
+
+
+### Swagger Documentation
+GET http://localhost:3000/api-docs
