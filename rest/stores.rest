@@ -1,0 +1,35 @@
+### Get all Stores
+GET http://localhost:3000/stores
+
+### Get single Store
+GET http://localhost:3000/stores/6928be96fdb871be20a0cf04
+
+### Base route
+GET http://localhost:3000/
+
+
+### Create new Stores
+POST http://localhost:3000/stores/6928be96fdb871be20a0cf04
+Content-Type: application/json
+
+{
+   "location": "Lagos, Nigeria",
+    "owner": "Ifeanyi Kalu"
+}
+
+### Update Store
+PUT http://localhost:3000/stores/6928b59574c3a19435ff64ff
+Content-Type: application/json
+
+{
+  
+   "location": "Lagos, Nigeria",
+    "owner": "Ifeanyi Kalu"
+}
+
+### Delete Store
+DELETE http://localhost:3000/stores/690db03e59caccf423ead6ed
+
+
+### Swagger Documentation
+GET http://localhost:3000/api-docs
