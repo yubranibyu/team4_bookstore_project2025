@@ -35,8 +35,13 @@
     "validatorjs": "^3.22.1"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^6.0.2",
     "jest": "^30.2.0",
     "supertest": "^7.1.4"
+  },
+  "jest": {
+    "preset": "@shelf/jest-mongodb",
+    "testEnvironment": "node"
   },
   "keywords": []
 }

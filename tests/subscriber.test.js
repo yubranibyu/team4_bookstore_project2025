@@ -3,7 +3,9 @@ const app = require("../server");
 const mongodb = require("../data/database");
 const { ObjectId } = require("mongodb");
 
-let testId;
+jest.setTimeout(30000);
+
+let testSubscriberId;
 
 beforeAll(async () => {
   await new Promise((resolve, reject) => {
@@ -12,6 +14,10 @@ beforeAll(async () => {
       resolve();
     });
   });
+});
+
+afterAll(async () => {
+  await mongodb.closeDB();
 });
 
 describe("Subscribers GET Endpoints", () => {
@@ -23,31 +29,32 @@ describe("Subscribers GET Endpoints", () => {
       accessToken: "abc123token",
       role: "admin",
     });
-    testId = result.insertedId.toString();
+    testSubscriberId = result.insertedId.toString();
   });
 
   afterAll(async () => {
     const db = mongodb.getDB();
-    await db.collection("subscriber").deleteOne({ _id: new ObjectId(testId) });
+    await db.collection("subscriber").deleteOne({ _id: new ObjectId(testSubscriberId) });
   });
 
   test("GET /subscriber should return 200", async () => {
     const res = await request(app).get("/subscriber");
     expect(res.statusCode).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
   });
 
-  test("GET /subscriber/:id should return subscriber", async () => {
-    const res = await request(app).get(`/subscriber/${testId}`);
+  test("GET /subscriber/:id should return a subscriber", async () => {
+    const res = await request(app).get(`/subscriber/${testSubscriberId}`);
     expect(res.statusCode).toBe(200);
-    expect(res.body._id).toBe(testId);
+    expect(res.body._id).toBe(testSubscriberId);
   });
 
-  test("GET /subscriber/invalidID returns 400", async () => {
-    const res = await request(app).get("/subscriber/xyz");
+  test("GET /subscriber/invalidID should return 400", async () => {
+    const res = await request(app).get("/subscriber/1234");
     expect(res.statusCode).toBe(400);
   });
 
-  test("GET /subscriber/:id returns 404 when not found", async () => {
+  test("GET /subscriber/:id should return 404 when not found", async () => {
     const fakeId = new ObjectId().toString();
     const res = await request(app).get(`/subscriber/${fakeId}`);
     expect(res.statusCode).toBe(404);
