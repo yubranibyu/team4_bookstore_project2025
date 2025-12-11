@@ -32,8 +32,8 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: true, // ✅ Only works over HTTPS
-      sameSite: "none", // ✅ Allows Swagger to send cookies
+      secure: true, // ✅ works on Render HTTPS
+      sameSite: "none", // ✅ allows Swagger to send cookies
     },
   })
 );
@@ -84,7 +84,15 @@ app.get("/", (req, res) => {
 // API Routes + Swagger
 // --------------------------
 app.use("/", routes);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    swaggerOptions: {
+      withCredentials: true, // ✅ ensures Swagger sends cookies
+    },
+  })
+);
 
 // --------------------------
 // Error Handlers
@@ -94,13 +102,11 @@ app.use((req, res) =>
 );
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res
-    .status(500)
-    .json({
-      success: false,
-      message: "Something went wrong!",
-      error: err.message,
-    });
+  res.status(500).json({
+    success: false,
+    message: "Something went wrong!",
+    error: err.message,
+  });
 });
 
 // --------------------------
