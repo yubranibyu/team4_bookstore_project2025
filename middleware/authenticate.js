@@ -1,9 +1,13 @@
+// --------------------------
+// Authentication Middleware
+// --------------------------
 const isAuthenticated = (req, res, next) => {
-  if (!req.session.user) {
+  // Use Passport's built-in method to check login state
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
     return res.status(401).json("You do not have access");
   }
 
-  next(); 
+  next();
 };
 
 module.exports = isAuthenticated;
