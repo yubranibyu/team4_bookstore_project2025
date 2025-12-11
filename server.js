@@ -17,10 +17,12 @@ const app = express();
 // Middleware
 // --------------------------
 app.use(bodyParser.json());
+
 app.use(
   cors({
-    origin: "*",
+    origin: "https://team4-bookstore-project2025-8b7e.onrender.com",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
   })
 );
 
@@ -29,6 +31,10 @@ app.use(
     secret: process.env.SESSION_SECRET || "secret",
     resave: false,
     saveUninitialized: true,
+    cookie: {
+      secure: true, // ✅ Only works over HTTPS
+      sameSite: "none", // ✅ Allows Swagger to send cookies
+    },
   })
 );
 
@@ -46,7 +52,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: process.env.CALLBACK_URL, // e.g. https://team4-bookstore-project2025-1pvx.onrender.com/github/callback
+      callbackURL: process.env.CALLBACK_URL, // e.g. https://team4-bookstore-project2025-8b7e.onrender.com/github/callback
     },
     (accessToken, refreshToken, profile, done) => done(null, profile)
   )
@@ -67,8 +73,11 @@ app.get(
 );
 
 app.get("/", (req, res) => {
-  if (req.session.user) res.send(`Logged in as ${req.session.user.username}`);
-  else res.send("Logged out");
+  if (req.isAuthenticated && req.isAuthenticated()) {
+    res.send(`Logged in as ${req.user.username}`);
+  } else {
+    res.send("Logged out");
+  }
 });
 
 // --------------------------
